@@ -1,0 +1,27 @@
+function [ corresPoints1, corresPoints2] = autoCorresp(image1, image2)
+  % This function returns corresponding points in two images.
+  % corresPoints1 and 2 are N*2 matrices. First column and second column
+  % represent x and y values in image of matlab
+  
+   
+    
+    %[row1, col1, channel1] = size(image1)
+    %[row2, col2, channel2] = size(image2)
+    simage1 = single(rgb2gray(image1));
+    simage2 = single(rgb2gray(image2));
+    [feature1, descriptor1] = vl_sift(simage1) ;
+    [feature2, descriptor2] = vl_sift(simage2) ;
+    [matches, scores] = mymatch(descriptor1, descriptor2, 10);
+    
+    size(descriptor1)
+    size(descriptor1)
+    size(matches)
+    matches(:, 1:8)
+    %[matches, scores] = matchFeatures(feature1, feature2, 'Unique', true);
+    matches = matches(:,scores < EUCLIDEAN_DIS_THRES);
+    %matches
+    corresPoints1 = [feature1(1, matches(1,:)) ; feature1(2, matches(1,:)) ]';
+    corresPoints2 = [feature2(1, matches(2,:)) ; feature2(2, matches(2,:)) ]';
+    %size(corresPoints1)
+    %size(corresPoints2)
+end
